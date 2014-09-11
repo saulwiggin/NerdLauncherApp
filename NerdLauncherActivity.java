@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -38,6 +39,21 @@ public class NerdLauncherActivity extends ListFragment {
 
             }
         });
+
+        ArrayAdapter<ResolveInfo> adapter = new ArrayAdapter<ResolveInfo>(
+                getActivity(), android.R.layout.simple_list_item_1,activities) {
+            public View getView(int pos, View convertView, ViewGroup parent) {
+                PackageManager pm = getActivity().getPackageManager();
+                View v = super.getView(pos, convertView, parent);
+                // Documentation says that simple_list_item_1 is a TextView,
+                // so cast it so that you can set its text value
+                TextView tv = (TextView)v;
+                ResolveInfo ri = getItem(pos);
+                tv.setText(ri.loadLabel(pm));
+                return v;
+            }
+        };
+        )
     }
 
     @Override
